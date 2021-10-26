@@ -1,0 +1,1 @@
+AT+HTTPPARA="URL","https://msc-project.onb.co.ke/tracker?imei=86183939982&rfid=146272&lat=-1.33415&lon=36.88616&timestamp=10/31/2019 08:25:32 &altitude=1635.6&course=87.87&speed= 90&plate='KAT 256G'"
