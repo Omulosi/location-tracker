@@ -81,7 +81,9 @@ const SpeedPopup = ({
             Driver: {item?.driver?.name}
           </div>
           <div className={classes.footer}>
-            <span>Current speed: {item?.location.speed}</span>
+            <span style={{ color: "red" }}>
+              Current speed: {item?.location.speed}
+            </span>
             <br />
             <span>Speed Limit: {speedLimit}</span>
           </div>

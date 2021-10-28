@@ -117,6 +117,7 @@ interface Props {
   handleClose: any;
   setAddSpeedLimit: any;
   setSpeedLimitSectionId: any;
+  speedLimitSectionId: number | null;
 }
 
 interface Section {
@@ -130,6 +131,7 @@ const EditMapPanel = ({
   handleClose,
   setAddSpeedLimit,
   setSpeedLimitSectionId,
+  speedLimitSectionId,
 }: Props) => {
   const classes = useStyles();
   const { data, isSuccess } = useSpeedLimits();
@@ -191,6 +193,12 @@ const EditMapPanel = ({
                 className={classes.speedItem}
                 onClick={() => setSpeedLimitSectionId(section.id)}
                 key={section.id}
+                style={{
+                  borderBottom:
+                    section.id === speedLimitSectionId
+                      ? "1px solid #8ab4f8"
+                      : "",
+                }}
               >
                 <span>{capitalize(section.sectionName)}</span>{" "}
                 <span>{`${section.speedLimit} km/h`}</span>

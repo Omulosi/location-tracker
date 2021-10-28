@@ -64,8 +64,6 @@ interface Props {
 const VehicleInfoPopup = ({ item }: Props) => {
   const classes = useStyles();
 
-  console.log("item ==> ", item);
-
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>

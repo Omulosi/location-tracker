@@ -10,7 +10,7 @@ import {
 } from "rlayers";
 import GeoJSON from "ol/format/GeoJSON";
 import { Vector as VectorSource } from "ol/source";
-import { never } from "ol/events/condition";
+import { never, always } from "ol/events/condition";
 import { makeStyles } from "@material-ui/core";
 import VehicleFeature from "../components/vehicleFeature/VehicleFeature";
 import "ol/ol.css";
@@ -22,7 +22,6 @@ import LineString from "ol/geom/LineString";
 import MarkerDialog from "../components/markerDialog/MarkerDialog";
 import { saveToStorage } from "../utils/localStorage";
 import { VehicleData } from "./index";
-import { useSpeedLimits } from "../fetch/speedLimits";
 
 const center = fromLonLat([37.05, 1.0]);
 
@@ -131,7 +130,6 @@ const MapView = ({
             let coordinates = geometry
               .getCoordinates()
               .map((coord) => toLonLat(coord));
-            console.log(coordinates);
             let obj = { section: coordinates, speedLimit: 0 };
 
             setSectionData(obj);

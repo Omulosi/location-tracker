@@ -38,5 +38,8 @@ export const getSpeedLimit = (locationCoordinates, roadSections) => {
       speedLimit = section.speedLimit;
     }
   });
+  if (speedLimit) {
+    speedLimit = Number(speedLimit);
+  }
   return speedLimit;
 };

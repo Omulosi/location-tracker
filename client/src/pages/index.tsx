@@ -105,8 +105,6 @@ const Main = () => {
       updatedVehicleData = data ? [...vehicleData, data] : vehicleData;
     }
 
-    console.log(updatedVehicleData);
-
     setVehicleData([...updatedVehicleData]);
   }, [data]);
 
@@ -125,6 +123,7 @@ const Main = () => {
           handleClose={toggleEditMapPanel}
           setAddSpeedLimit={setAddSpeedLimit}
           setSpeedLimitSectionId={setSpeedLimitSectionId}
+          speedLimitSectionId={speedLimitSectionId}
         />
       </div>
       <div className={classes.main}>

@@ -17,6 +17,8 @@ interface Props {
   selectedFeature: Item | null;
 }
 
+let speedViolationPath: Point[] = [];
+
 const VehicleFeature = ({ item, selectedFeature }: Props) => {
   const [showPopup, setShowPopup] = React.useState(true);
 
@@ -31,7 +33,6 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
 
   let roadSections = [];
   if (isSuccess) {
-    console.log(data);
     roadSections = data.features.map(
       (ft: {
         properties: { speed_limit: any; section_name: any };
@@ -39,7 +40,7 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
       }) => ({
         speedLimit: ft.properties.speed_limit,
         sectionName: ft.properties.section_name,
-        section: ft.geometry.coordinates,
+        section: ft.geometry.coordinates.map((c: number[]) => fromLonLat(c)),
       })
     );
     roadSections = roadSections.reverse();
@@ -52,6 +53,11 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
   const closePopup = () => {
     setShowPopup(false);
   };
+
+  // if (item && speedLimit && Number(item?.location.speed) >= speedLimit) {
+  //   speedViolationPath.push(location);
+  //   console.log(speedViolationPath);
+  // }
 
   return (
     <div>
@@ -72,7 +78,7 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
           {speedLimit &&
             showPopup &&
             item &&
-            item.location.speed >= speedLimit && (
+            Number(item.location.speed) >= speedLimit && (
               <SpeedPopup
                 item={item}
                 speedLimit={speedLimit}
