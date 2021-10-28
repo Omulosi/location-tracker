@@ -33,7 +33,7 @@ export const useProvideAuth = () => {
         history.push("/");
       })
       .catch((error) => {
-        dispatch(loginFailure(error.response.data.error || error.message));
+        dispatch(loginFailure(error?.response?.data?.error || error.message));
       });
   };
 

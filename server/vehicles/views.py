@@ -121,6 +121,7 @@ class VehicleListCreate(mixins.ListModelMixin, generics.GenericAPIView):
                 'driver': driver_data
                 
             })
+            return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_200_OK)
     
     def get(self, request, *args, **kwargs):

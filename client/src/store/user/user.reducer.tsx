@@ -12,10 +12,12 @@ export const AuthReducer = (state = initialState, action: ActionType) => {
       return {
         ...state,
         isAuthenticated: true,
+        error: null,
       };
 
     case ACTION_TYPES.LOGIN_FAILURE:
       return {
+        ...state,
         isAuthenticated: false,
         error: action.payload,
       };

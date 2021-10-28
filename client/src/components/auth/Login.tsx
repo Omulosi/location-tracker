@@ -15,6 +15,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router";
 import { useAuth } from "../../context/auth/auth";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,7 +54,12 @@ const validationSchema = yup.object({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const { login } = useAuth();
+  const {
+    login,
+    authState: { error },
+  } = useAuth();
+
+  console.log(error);
 
   const formik = useFormik({
     initialValues: {
@@ -104,10 +110,9 @@ export default function Login() {
             helperText={formik.touched.password && formik.errors.password}
             margin="normal"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+
+          <Box className={classes.error}>{error && error}</Box>
+
           <Button
             className={classes.submit}
             color="primary"

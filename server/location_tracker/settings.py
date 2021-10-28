@@ -188,6 +188,7 @@ DJOSER = {
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://vehicle-tracker-uon.herokuapp.com'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
