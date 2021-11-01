@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 import environ
 
 env = environ.Env(DEBUG=(bool, False))
@@ -19,17 +20,20 @@ environ.Env.read_env(".env")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def rel(*path):
+    return os.path.join(BASE_DIR, *path)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-us)*n_*=kt$90#m=h)l_2ik5^s&^-1q@6vna3wl+!mzgw3oe2'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 
 # Application definition
@@ -143,20 +147,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles/"
+STATICFILES_DIRS = (BASE_DIR / "static/",)
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# REDIS_URL = env.str('REDIS_URL')
+REDIS_URL = env.str('REDIS_URL')
 
-REDIS_URL = 'redis://localhost:6379'
+APP_HOST = env.str('APP_HOST')
+
+# REDIS_URL = 'redis://localhost:6379'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)]
+            'hosts': [(APP_HOST, 6379)]
         }
     }
 }
@@ -186,9 +194,18 @@ DJOSER = {
     },
 }
 
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': False,
+}
+
+
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://vehicle-tracker-uon.herokuapp.com'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+import django_heroku
+django_heroku.settings(locals())

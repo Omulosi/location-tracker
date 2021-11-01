@@ -68,7 +68,6 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       login(values, history);
     },
   });
@@ -122,19 +121,6 @@ export default function Login() {
           >
             Submit
           </Button>
-
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>

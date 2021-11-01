@@ -9,11 +9,11 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { SvgIconComponent } from "@material-ui/icons";
+import clsx from "clsx";
 
 const useStyles = makeStyles(() => ({
   menuButton: {
     color: "#fff",
-    marginBottom: "24px",
     background: "transparent",
     cursor: "pointer",
     padding: "7px",
@@ -35,12 +35,14 @@ interface Props {
   icon: SvgIconComponent;
   title: string;
   handleClick: any;
+  className?: any;
 }
 
 const SideBarIconWrapper: React.FC<Props> = ({
   icon,
   title,
   handleClick,
+  className,
 }: Props) => {
   const classes = useStyles();
 
@@ -48,7 +50,11 @@ const SideBarIconWrapper: React.FC<Props> = ({
 
   return (
     <div>
-      <IconButton className={classes.menuButton} color="inherit" size="small">
+      <IconButton
+        className={clsx(className, classes.menuButton)}
+        color="inherit"
+        size="small"
+      >
         <CustomTooltip
           title={title}
           placement="right"

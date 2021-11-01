@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton, makeStyles } from "@material-ui/core";
 import { Clear, ChevronLeft } from "@material-ui/icons";
 import { Divider, Drawer } from "@material-ui/core";
-import { getItemsFromStorage } from "../../utils/localStorage";
+// import { getItemsFromStorage } from "../../utils/localStorage";
 import { capitalize } from "../../utils/capitalize";
 import { useSpeedLimits } from "../../fetch/speedLimits";
 

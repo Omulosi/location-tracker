@@ -4,7 +4,15 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import MenuHeader from "./MenuHeader";
 import MenuProfile from "./MenuProfile";
-import { Divider } from "@material-ui/core";
+import {
+  Divider,
+  MenuItem,
+  ListItemIcon,
+  MenuList,
+  ListItemText,
+} from "@material-ui/core";
+import { List, Map as MapIcon } from "@material-ui/icons";
+import SideBarIconWrapper from "../sideBar/SideBarIconWrapper";
 
 const drawerWidth = 320;
 
@@ -33,9 +41,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   open: boolean;
   handleClose: any;
+  toggleEditMapPanel: any;
 }
 
-const MenuPanel = ({ open, handleClose }: Props) => {
+const MenuPanel = ({ open, handleClose, toggleEditMapPanel }: Props) => {
   const classes = useStyles();
 
   return (
@@ -53,6 +62,24 @@ const MenuPanel = ({ open, handleClose }: Props) => {
           <MenuProfile />
           <Divider style={{ backgroundColor: "#5f6368" }} />
           {/** Menu Items - map, etc */}
+          <MenuList>
+            <MenuItem
+              onClick={(e) => {
+                // setDrawerOpen(false);
+                handleClose();
+                toggleEditMapPanel();
+              }}
+            >
+              <ListItemIcon>
+                <SideBarIconWrapper
+                  icon={MapIcon}
+                  title="Edit Map"
+                  handleClick={toggleEditMapPanel}
+                />
+              </ListItemIcon>
+              <ListItemText>Edit Map</ListItemText>
+            </MenuItem>
+          </MenuList>
         </div>
       </Drawer>
     </div>

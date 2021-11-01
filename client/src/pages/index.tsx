@@ -116,7 +116,11 @@ const Main = () => {
           toggleSearchBar={toggleSearchBar}
           toggleEditMapPanel={toggleEditMapPanel}
         />
-        <MenuPanel open={openMenuPanel} handleClose={toggleMenuPanel} />
+        <MenuPanel
+          open={openMenuPanel}
+          handleClose={toggleMenuPanel}
+          toggleEditMapPanel={toggleEditMapPanel}
+        />
         {/* <SearchBar open={openSearchBar} handleClose={toggleSearchBar} /> */}
         <EditMapPanel
           open={openEditMapPanel}

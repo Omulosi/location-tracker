@@ -1,9 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Search, Map as MapIcon } from "@material-ui/icons";
+import { Map as MapIcon } from "@material-ui/icons";
 import SideBarIconWrapper from "./SideBarIconWrapper";
-import MenuPanel from "../menuPanel/MenuPanel";
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -18,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     transition: "background-color 300ms cubic-bezier(.4,0,.2,1)",
+  },
+  iconWrapper: {
+    marginBottom: "24px",
   },
 }));
 
@@ -39,6 +41,7 @@ const SideBar = ({
         icon={MenuIcon}
         title="Menu"
         handleClick={toggleMenuPanel}
+        className={classes.iconWrapper}
       />
       {/* <SideBarIconWrapper
         icon={Search}
