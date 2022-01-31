@@ -1,8 +1,8 @@
 import { useContext, useReducer } from "react";
 import axios from "axios";
-import { History } from "history";
 import { AuthReducer, initialState } from "../../store/user/user.reducer";
 import { loginSuccess, loginFailure } from "../../store/user/user.actions";
+import { NavigateFunction } from "react-router-dom";
 import { AuthContext } from "./index";
 import { HOST } from "../../config";
 
@@ -13,13 +13,13 @@ export const useAuth = () => {
 export const useProvideAuth = () => {
   const [authState, dispatch] = useReducer(AuthReducer, initialState);
 
-  const login = (user: any, history: History) => {
+  const login = (user: any, navigate: NavigateFunction) => {
     axios
       .post(`${HOST}/auth/token/login/`, user)
       .then((res) => {
         dispatch(loginSuccess());
         localStorage.setItem("token", res.data.auth_token);
-        history.push("/");
+        navigate("/");
       })
       .catch((error) => {
         console.log({ error });
@@ -31,9 +31,9 @@ export const useProvideAuth = () => {
       });
   };
 
-  const logout = (history: History) => {
+  const logout = (navigate: NavigateFunction) => {
     localStorage.removeItem("token");
-    history.push("/login");
+    navigate("/login");
     dispatch(loginFailure(null));
   };
 

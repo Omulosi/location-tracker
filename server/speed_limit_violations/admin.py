@@ -3,4 +3,6 @@ from .models import SpeedViolation
 
 @admin.register(SpeedViolation)
 class SpeedViolationAdmin(admin.OSMGeoAdmin):
-    pass
+    
+    def has_change_permission(self, request, obj=None):
+        return False

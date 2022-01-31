@@ -7,6 +7,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import App from "./App";
 import { AuthContextProvider } from "./context/auth";
 import reportWebVitals from "./reportWebVitals";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 

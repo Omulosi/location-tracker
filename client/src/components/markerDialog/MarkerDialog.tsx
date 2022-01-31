@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   makeStyles,
   IconButton,
-  Snackbar,
   Button,
   Dialog,
   DialogTitle,
@@ -10,11 +9,10 @@ import {
   TextField,
   DialogActions,
 } from "@material-ui/core";
-import { Clear, Close } from "@material-ui/icons";
+import { Clear } from "@material-ui/icons";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { SpeedLimit } from "../../pages/Map";
-import { appendToStorage } from "../../utils/localStorage";
+import { SpeedLimit } from "../../pages/MapView";
 import { useAddSpeedLimit } from "../../fetch/speedLimits";
 
 const useStyles = makeStyles((theme) => ({
@@ -101,6 +99,7 @@ export default function MarkerDialog({ open, handleClose, data }: Props) {
     }
 
     addSpeedLimit.mutate(data);
+
     handleClose();
   };
 

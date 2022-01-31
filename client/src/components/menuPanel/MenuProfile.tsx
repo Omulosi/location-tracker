@@ -1,8 +1,8 @@
 import React from "react";
 import { Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth/auth";
-import { useHistory } from "react-router";
 import useUser from "../../fetch/users";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const MenuProfile = () => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { logout } = useAuth();
 
   const { data } = useUser();
@@ -60,7 +60,7 @@ const MenuProfile = () => {
       <div
         id="sign-out"
         className={classes.signOut}
-        onClick={() => logout(history)}
+        onClick={() => logout(navigate)}
       >
         Sign Out
       </div>

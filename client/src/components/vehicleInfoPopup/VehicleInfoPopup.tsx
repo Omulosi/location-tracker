@@ -5,7 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 // import CloseIcon from "@material-ui/icons/Close";
 // import { Item } from "../../pages/Map/Map";
 // import { IconButton } from "@material-ui/core";
-import { VehicleData } from "../../pages";
+import { VehicleData } from "../../pages/Layout";
 
 const useStyles = makeStyles({
   root: {
@@ -71,6 +71,9 @@ const VehicleInfoPopup = ({ item }: Props) => {
           <div className={classes.title}>Vehicle: {item?.vehicle.plate}</div>
           <div className={classes.footer} style={{ color: "whitesmoke" }}>
             Driver: {item?.driver?.name}
+          </div>
+          <div className={classes.footer} style={{ color: "whitesmoke" }}>
+            Tracker: {item?.vehicle?.imei}
           </div>
           <div className={classes.footer}>
             <span>Current speed: {item?.location.speed}</span>

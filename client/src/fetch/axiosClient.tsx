@@ -14,18 +14,11 @@ export const axiosWithAuth = () => {
 
   client.interceptors.response.use(
     function (response) {
-      //Dispatch any action on success
-      console.log(
-        "=================================== intercepted ======================"
-      );
       return response;
     },
     function (error) {
-      localStorage.removeItem("token");
-      window.location.reload();
-      console.log(
-        "=================================== intercepted error ======================"
-      );
+      // localStorage.removeItem("token");
+      // window.location.reload();
       return Promise.reject(error);
     }
   );

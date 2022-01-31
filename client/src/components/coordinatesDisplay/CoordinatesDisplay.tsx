@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Coordinates } from "../../pages/Map";
+import { Coordinates } from "../../pages/MapView";
 
 interface Props {
   pointerCoordinates: Coordinates | null;

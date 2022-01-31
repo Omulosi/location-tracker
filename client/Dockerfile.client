@@ -1,0 +1,19 @@
+# Pull official base image
+FROM node:alpine
+
+# Set working directory
+WORKDIR /client
+
+COPY . /client/
+
+
+# Install dependencies
+RUN ["yarn", ""]
+
+RUN ["pwd"]
+RUN ["ls", "-l"]
+
+EXPOSE 3000
+
+# Start app
+CMD ["yarn", "start"]

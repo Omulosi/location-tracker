@@ -9,6 +9,3 @@ class SpeedLimit(models.Model):
     
     def __str__(self):
         return f'{self.section_name} - {self.speed_limit}'
-
-
-

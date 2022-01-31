@@ -1,12 +1,12 @@
 import React, { createContext } from "react";
-import { History } from "history";
+import { NavigateFunction } from "react-router-dom";
 import { ActionType } from "../../store/user/user.actions";
 import { useProvideAuth } from "./auth";
 
 type AuthContextInterface = {
   authState: { isAuthenticated: boolean; error: any };
-  login: (user: any, history: History) => void;
-  logout: (history: History) => void;
+  login: (user: any, navigate: NavigateFunction) => void;
+  logout: (navigate: NavigateFunction) => void;
   dispatch: React.Dispatch<ActionType> | null;
 };
 

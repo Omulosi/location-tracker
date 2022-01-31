@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_extensions',
+    #
+    'common.apps.CommonConfig',
     'vehicles.apps.VehiclesConfig',
     'drivers.apps.DriversConfig',
     'users.apps.UsersConfig',
@@ -134,7 +137,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+
+TIME_ZONE = 'Africa/Nairobi'
+
 
 USE_I18N = True
 
@@ -153,6 +159,10 @@ STATICFILES_DIRS = (BASE_DIR / "static/",)
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+ADMINS = (
+    ("admin@admin.com", "password"),
+)
 
 REDIS_URL = env.str('REDIS_URL')
 
@@ -181,9 +191,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # )
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 DJOSER = {
@@ -195,8 +205,7 @@ DJOSER = {
 }
 
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': False,
+  'app_labels': ['speed_limit', 'tracker_devices', 'users', 'vehicles']
 }
 
 
@@ -207,5 +216,5 @@ CORS_ORIGIN_WHITELIST = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())

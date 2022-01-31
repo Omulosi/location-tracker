@@ -1,5 +1,6 @@
 import { useQueryClient, useMutation, useQuery } from "react-query";
-import { SpeedLimit } from "../pages/Map";
+import { toast } from "react-toastify";
+import { SpeedLimit } from "../pages/MapView";
 import { addResource, getResource } from "./fetcher";
 
 const getSpeedLimits = async () => {
@@ -25,11 +26,10 @@ export const useAddSpeedLimit = () => {
   const mutation = useMutation(addSpeedLimit, {
     onSuccess: () => {
       queryClient.invalidateQueries("speedLimits");
-      alert("Speed limit added");
+      toast.success("New speed limit added");
     },
     onError: () => {
-      // snack bar
-      alert("Error adding speed limit");
+      toast.error("Error adding speed limit");
     },
   });
   return mutation;

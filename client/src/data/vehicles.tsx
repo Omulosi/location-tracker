@@ -1,5 +1,5 @@
 /* eslint-disable no-loop-func */
-import { Item } from "../pages/Map";
+import { Item } from "../pages/MapView";
 
 type VehicleType = { [k: string]: Item };
 

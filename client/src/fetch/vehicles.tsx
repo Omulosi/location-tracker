@@ -1,5 +1,5 @@
 import { useQueryClient, useMutation, useQuery } from "react-query";
-import { SpeedLimit } from "../pages/Map";
+import { SpeedLimit } from "../pages/MapView";
 import { addResource, getResource } from "./fetcher";
 
 const getVehicles = async () => {

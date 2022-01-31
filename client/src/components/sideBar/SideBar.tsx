@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Map as MapIcon } from "@material-ui/icons";
+import { Map as MapIcon, Dashboard, Edit } from "@material-ui/icons";
 import SideBarIconWrapper from "./SideBarIconWrapper";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -21,12 +22,15 @@ const useStyles = makeStyles((theme) => ({
   iconWrapper: {
     marginBottom: "24px",
   },
+  sidebarItem: {
+    marginBottom: "1rem",
+  },
 }));
 
 interface Props {
-  toggleMenuPanel: any;
-  toggleSearchBar: any;
-  toggleEditMapPanel: any;
+  toggleMenuPanel?: any;
+  toggleSearchBar?: any;
+  toggleEditMapPanel?: any;
 }
 const SideBar = ({
   toggleMenuPanel,
@@ -34,6 +38,8 @@ const SideBar = ({
   toggleEditMapPanel,
 }: Props) => {
   const classes = useStyles();
+
+  const navigate = useNavigate();
 
   return (
     <div className={classes.sidebar}>
@@ -43,13 +49,26 @@ const SideBar = ({
         handleClick={toggleMenuPanel}
         className={classes.iconWrapper}
       />
-      {/* <SideBarIconWrapper
-        icon={Search}
-        title="Search"
-        handleClick={toggleSearchBar}
-      /> */}
+      <SideBarIconWrapper
+        icon={Dashboard}
+        title="Dashboard"
+        handleClick={() => {
+          navigate("dashboard");
+        }}
+        className={classes.sidebarItem}
+      />
+
       <SideBarIconWrapper
         icon={MapIcon}
+        title="Map"
+        handleClick={() => {
+          navigate("/");
+        }}
+        className={classes.sidebarItem}
+      />
+
+      <SideBarIconWrapper
+        icon={Edit}
         title="Edit Map"
         handleClick={toggleEditMapPanel}
       />

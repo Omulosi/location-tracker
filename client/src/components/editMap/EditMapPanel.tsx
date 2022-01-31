@@ -110,6 +110,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#3c4043",
     },
   },
+  sectionName: {
+    display: "inline-block",
+    width: "65%",
+    maxWidth: "65%",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
 }));
 
 interface Props {
@@ -164,9 +171,8 @@ const EditMapPanel = ({
       >
         <div className={classes.topBox}>
           <div className={classes.trailingButtons}>
-            <div></div>
-            <IconButton className={classes.iconButton}>
-              <ChevronLeft onClick={handleClose} />
+            <IconButton className={classes.iconButton} onClick={handleClose}>
+              <ChevronLeft />
             </IconButton>
           </div>
 
@@ -179,14 +185,34 @@ const EditMapPanel = ({
             >
               Add speed limit
             </button>
-            <IconButton className={classes.iconButton}>
-              <Clear onClick={() => setAddSpeedLimit(false)} />
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => setAddSpeedLimit(false)}
+            >
+              <Clear />
             </IconButton>
           </div>
         </div>
         <Divider style={{ backgroundColor: "#5f6368" }} />
 
+        {/** Speed Limits list display section */}
         <div className={classes.wrapper}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingRight: "16px",
+            }}
+          >
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => setSpeedLimitSectionId(null)}
+            >
+              <Clear />
+            </IconButton>
+            <span>Clear Map</span>
+          </div>
           {roadSections &&
             roadSections.map((section: Section) => (
               <div
@@ -200,7 +226,9 @@ const EditMapPanel = ({
                       : "",
                 }}
               >
-                <span>{capitalize(section.sectionName)}</span>{" "}
+                <span className={classes.sectionName}>
+                  {capitalize(section.sectionName)}
+                </span>{" "}
                 <span>{`${section.speedLimit} km/h`}</span>
               </div>
             ))}

@@ -5,19 +5,20 @@ import Point from "ol/geom/Point";
 import SpeedPopup from "../speedPopup/SpeedPopup";
 import vehicleIcon from "../../assets/driver.png";
 
-import { Item } from "../../pages/Map";
+import { Item } from "../../pages/MapView";
 import VehicleInfoPopup from "../vehicleInfoPopup/VehicleInfoPopup";
 import { getItemsFromStorage } from "../../utils/localStorage";
 import { getSpeedLimit } from "../../utils/polyline";
-import { VehicleData } from "../../pages";
+import { VehicleData } from "../../pages/Layout";
 import { useSpeedLimits } from "../../fetch/speedLimits";
+// import { _socket } from "../../pages";
+import { logSpeedViolation } from "../../services/VehicleService";
+import { connect } from "../../services/VehicleService";
 
 interface Props {
   item: VehicleData | null;
   selectedFeature: Item | null;
 }
-
-let speedViolationPath: Point[] = [];
 
 const VehicleFeature = ({ item, selectedFeature }: Props) => {
   const [showPopup, setShowPopup] = React.useState(true);
@@ -31,7 +32,7 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
     ])
   );
 
-  let roadSections = [];
+  let roadSections: any[] = [];
   if (isSuccess) {
     roadSections = data.features.map(
       (ft: {
@@ -50,14 +51,41 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
 
   const speedLimit = getSpeedLimit(locationCoordinates, roadSections);
 
+  console.log("== Speed Limit (Vehicle Feature) ====> ", {
+    speedLimit,
+    roadSections,
+  });
+
   const closePopup = () => {
     setShowPopup(false);
   };
 
-  // if (item && speedLimit && Number(item?.location.speed) >= speedLimit) {
-  //   speedViolationPath.push(location);
-  //   console.log(speedViolationPath);
-  // }
+  let alreadyLogged = React.useRef(false);
+
+  React.useEffect(() => {
+    connect();
+  });
+
+  React.useEffect(() => {
+    console.log("========= SPEED LIMIT VIOLATION ==============");
+    console.log({ speedLimit, speed: item?.location.speed });
+
+    if (speedLimit && Number(item?.location.speed) > Number(speedLimit)) {
+      let speed = item?.location.speed;
+      // send info to backend
+      logSpeedViolation(
+        speed,
+        alreadyLogged.current,
+        item,
+        roadSections,
+        speedLimit
+      );
+      alreadyLogged.current = true;
+    } else {
+      alreadyLogged.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item, item?.location.speed, speedLimit]);
 
   return (
     <div>
@@ -78,7 +106,7 @@ const VehicleFeature = ({ item, selectedFeature }: Props) => {
           {speedLimit &&
             showPopup &&
             item &&
-            Number(item.location.speed) >= speedLimit && (
+            Number(item.location.speed) > speedLimit && (
               <SpeedPopup
                 item={item}
                 speedLimit={speedLimit}

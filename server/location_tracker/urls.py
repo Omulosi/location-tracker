@@ -20,13 +20,14 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Accessed by remote tracker
     path('tracker/', include('vehicles.urls')),
-    # path('users/', include('users.urls')),
+    # Authentication URLs
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('drivers/', include('drivers.urls')),
+    # Accessed by frontend UI
     path('vehicles/', include('vehicles.urls')),
     path('tracker_devices/', include('tracker_devices.urls')),
     path('speed_limits/', include('speed_limit.urls')),
-    path('speed_violations/', include('speed_limit_violations.urls')),
 ]

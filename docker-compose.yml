@@ -16,19 +16,44 @@ services:
       test: "exit 0"
     network_mode: host
 
-  # pgadmin:
-  #   container_name: pgadmin_mortgage
-  #   image: dpage/pgadmin4
-  #   restart: always
+  # server:
+  #   container_name: server_tracker
+  #   build:
+  #     context: "./server"
+  #     dockerfile: Dockerfile.server
+  #   depends_on:
+  #     - postgis
   #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: root
+  #     - DATABASE_URL=postgis://tracker:tracker@127.0.0.1:5432/tracker
   #   ports:
-  #     - "5050:80"
-
-  # redis:
-  #   image: redis:latest
+  #     - "8000:8000"
   #   network_mode: host
+
+  # client:
+  #   container_name: client_tracker
+  #   build:
+  #     context: "./client"
+  #     dockerfile: Dockerfile.client
+  #   volumes:
+  #     - type: bind
+  #       source: "./client/src"
+  #       target: /cleint/src
+  #   ports:
+  #     - "3000:3000"
+  #   network_mode: host
+
+  tracker:
+    container_name: test_tracker
+    build:
+      context: "./test"
+      dockerfile: Dockerfile.test
+    volumes:
+      - type: bind
+        source: "./test/public"
+        target: /test/public
+    ports:
+      - "5000:5000"
+    network_mode: host
 
 volumes:
   tracker-pgdata:

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback } from "react";
 import { fromLonLat, toLonLat } from "ol/proj";
 import {
@@ -7,23 +8,24 @@ import {
   ROSM,
   RStyle,
   VectorSourceEvent,
+  RGeolocation,
+  RFeature,
+  RContext,
 } from "rlayers";
+import { Point, SimpleGeometry } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
-import { Vector as VectorSource } from "ol/source";
-import { never, always } from "ol/events/condition";
 import { makeStyles } from "@material-ui/core";
-import VehicleFeature from "../components/vehicleFeature/VehicleFeature";
+import VehicleFeature from "../vehicleFeature/VehicleFeature";
 import "ol/ol.css";
-import MapStatus from "../components/mapStatus/MapStatus";
-import CoordinatesDisplay from "../components/coordinatesDisplay/CoordinatesDisplay";
-import DrawInteraction from "../components/interaction/DrawInteraction";
+import MapStatus from "../mapStatus/MapStatus";
+import CoordinatesDisplay from "../coordinatesDisplay/CoordinatesDisplay";
 import Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
-import MarkerDialog from "../components/markerDialog/MarkerDialog";
-import { saveToStorage } from "../utils/localStorage";
-import { VehicleData } from "./index";
+import MarkerDialog from "../markerDialog/MarkerDialog";
+import { VehicleData } from "../../pages/Layout";
 
 const center = fromLonLat([37.05, 1.0]);
+let map: any;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +72,7 @@ export interface Feature {
   visible: boolean;
 }
 
-const MapView = ({
+const Map = ({
   locations,
   addSpeedLimit,
   setAddSpeedLimit,
@@ -79,14 +81,6 @@ const MapView = ({
 }: MapProps): JSX.Element => {
   const classes = useStyles();
 
-  // const { data, isSuccess } = useSpeedLimits();
-
-  // let speedLimits = [];
-  // if (isSuccess) {
-  //   speedLimits = data.features;
-  //   console.log(speedLimits);
-  // }
-
   const [selectedFeature, setSelectedFeature] = React.useState<Item | null>(
     null
   );
@@ -94,6 +88,10 @@ const MapView = ({
     React.useState<Coordinates | null>(null);
   const [sectionData, setSectionData] = React.useState<SpeedLimit | null>(null);
   const [openSpeedLimitDialog, setOpenSpeedLimitDialog] = React.useState(false);
+  const [pos, setPos] = React.useState(new Point(fromLonLat([0, 0])));
+  const [accuracy, setAccuracy] = React.useState(
+    undefined as Geometry | undefined
+  );
 
   return (
     <div className={classes.root}>
@@ -110,20 +108,28 @@ const MapView = ({
             latitude: +Number(lonlat[1]).toFixed(3),
           });
         }, [])}
+        onRenderComplete={(e) => {
+          map = e.target;
+        }}
+        onChange={(e) => {
+          console.log("======= MAP CHANGED =========================");
+        }}
       >
         <ROSM />
-        {false && <DrawInteraction />}
+
+        {/** Display vehicle location on map */}
         <RLayerVector>
           {locations &&
             locations.map((feature: VehicleData | null, ind: number) => (
               <VehicleFeature
                 item={feature}
-                key={feature ? feature.vehicle.imei : ind}
+                key={feature?.vehicle.imei || ind}
                 selectedFeature={selectedFeature}
               />
             ))}
         </RLayerVector>
 
+        {/** Adds speed limit geometry data */}
         <RLayerVector
           onAddFeature={(e: VectorSourceEvent<Geometry>) => {
             const geometry = e.feature?.getGeometry() as LineString;
@@ -151,6 +157,15 @@ const MapView = ({
               featureProjection: "EPSG:3857",
             }).readFeatures(geojson)}
             visible={geojson.id === sectionIdToDisplay}
+            key={geojson.id}
+            onClick={(e) => {
+              /* ts-lint:disable */
+              e.map.getView().fit(e.target.getGeometry().getExtent(), {
+                duration: 250,
+                maxZoom: 15,
+                padding: [50, 50, 50, 50],
+              });
+            }}
           >
             <RStyle.RStyle>
               <RStyle.RStroke color="red" width={4} />
@@ -165,6 +180,8 @@ const MapView = ({
           <CoordinatesDisplay pointerCoordinates={pointerCoordinates} />
         )}
       </MapStatus>
+
+      {/** Dialog for adding speed limit */}
       <MarkerDialog
         open={openSpeedLimitDialog}
         handleClose={() => setOpenSpeedLimitDialog(false)}
@@ -174,4 +191,4 @@ const MapView = ({
   );
 };
 
-export default MapView;
+export default Map;
