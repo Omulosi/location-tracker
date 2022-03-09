@@ -6,9 +6,11 @@ from django.utils import timezone
 from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+from django.db.models import Q
 
-from .serializers import VehicleSerializer
-from .models import Vehicle
+from .serializers import VehicleSerializer, MonitoringDataSerializer
+from .models import Vehicle, MonitoringData
 from drivers.models import Driver
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -60,14 +62,22 @@ class VehicleListCreate(mixins.ListModelMixin, generics.GenericAPIView):
             # location = Location(**location_data, vehicle=vehicle)
             # location.save()
             
+            
             # send this event over the channel layer to be
             # handled by the consumer
             async_to_sync(channel_layer.group_send)('vehicles', {
                 'type': 'send_locations',
                 'location': location_data,
                 'vehicle': vehicle_data,
-                'driver': driver_data,   
+                'driver': driver_data,
             })
+            
+            # Indicates data has been successfully received from tracker
+            time_received = timezone.now()
+            # save time received
+            monitoring_data = MonitoringData(time_received_from_tracker=time_received)
+            monitoring_data.save()
+            
             return Response(status=status.HTTP_200_OK)
         
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -82,6 +92,36 @@ class VehicleDetail(generics.RetrieveDestroyAPIView):
     permission_classes = ()
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
+    
+class MonitoringDataList(APIView):
+    
+    def get(self, request):
+        year = request.query_params.get('year')
+        week = request.query_params.get('week')
+       
+        items = MonitoringData.objects.all()
+        if week is not None and year is not None:
+            print(f"week ==========================> {int(week)}")
+            items = MonitoringData.objects.filter(Q(time_received_from_tracker__week=int(week)) | Q(time_sent_to_display__week=int(week)))
+            items = items.filter(Q(time_received_from_tracker__year=int(year)) | Q(time_sent_to_display__year=int(year)))
+            
+        serializer = MonitoringDataSerializer(items, many=True)
+        return Response(serializer.data)
+    
+    
+# class MonitoringDataList(mixins.ListModelMixin, generics.GenericAPIView):
+    
+#     authentication_classes = ()
+#     permission_classes = ()
+#     queryset = MonitoringData.objects.all()
+#     serializer_class = MonitoringDataSerializer
+        
+#     def get(self, request, *args, **kwargs):
+#         year = request.query_params.get('year')
+#         week = request.query_params.get('week')
+#         print(f"======================++> {week}: {year}")
+#         queryset
+#         return self.list(request, *args, **kwargs)
     
     
     

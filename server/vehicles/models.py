@@ -9,6 +9,16 @@ class Vehicle(models.Model):
     def __str__(self):
         return f'{self.model} - {self.plate}'
     
+    
+class MonitoringData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    time_received_from_tracker = models.DateTimeField(default=None, blank=True, null=True)
+    time_sent_to_display = models.DateTimeField(default=None, blank=True, null=True)
+    
+
+    def __str__(self):
+        return f'Monitoring Data - {id}'
+    
 # class Location(models.Model):
 #     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 #     speed = models.DecimalField(max_digits=10, decimal_places=4, default=0.0)

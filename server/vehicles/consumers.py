@@ -1,6 +1,8 @@
+from time import timezone
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from vehicles.models import Vehicle
+from django.utils import timezone
+from vehicles.models import Vehicle, MonitoringData
 from vehicles.serializers import VehicleSerializer
 from speed_limit_violations.serializers import SpeedViolationSerializer
 from speed_limit_violations.models import SpeedViolation
@@ -30,6 +32,7 @@ class VehicleConsumer(AsyncJsonWebsocketConsumer):
         speed_violation_obj['vehicle'] = Vehicle.objects.get(plate=data.get('plate'))
         speed_violation_obj['tracker'] = Tracker.objects.get(imei=data.get('imei'))
         speed_violation_obj['speed'] = data.get('speed')
+        # speed_violation_obj['date'] = timezone.now()
         serializer = SpeedViolationSerializer(data=speed_violation_obj)
         serializer.is_valid(raise_exception=True)
         logger.critical(" ==== Speed limit violation saved  ====")
@@ -51,11 +54,27 @@ class VehicleConsumer(AsyncJsonWebsocketConsumer):
         
     async def send_locations(self, event):
         logger.critical(" ==== Sending message to client ====")
+        
         await self.send_json({
             'location': event["location"],
             'vehicle': event['vehicle'],
             'driver': event['driver'],
         })
+        
+        await self._save_monitoring_data()
+ 
+
+        
+    @database_sync_to_async
+    def _save_monitoring_data(self):
+        logger.critical(" ==== Monitoring data sent to display and saved ====")
+        # Indicates data has been successfully sent to display
+        time_sent_to_display = timezone.now()
+        # save time received
+        monitoring_data = MonitoringData(time_sent_to_display= time_sent_to_display)
+        monitoring_data.save()
+        
+        
         
     async def disconnect(self, close_code):
         logger.critical(" ==== Web Socket Disconnected ====")

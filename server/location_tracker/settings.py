@@ -205,9 +205,8 @@ DJOSER = {
 }
 
 GRAPH_MODELS = {
-  'app_labels': ['speed_limit', 'tracker_devices', 'users', 'vehicles']
+  'app_labels': ['speed_limit', 'tracker_devices', 'users', 'vehicles', 'drivers', "speed_limit_violations"]
 }
-
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',

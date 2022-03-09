@@ -9,7 +9,7 @@ class UserManager(CoreManager, BaseUserManager):
 
     def create_user(self, email, password=None, **kwargs):
         if not email:
-            raise ValueError("Users must gave an email address")
+            raise ValueError("Users must give an email address")
 
         user = self.model(email=email, **kwargs)
         user.set_password(password)

@@ -16,6 +16,7 @@ class SpeedViolation(models.Model):
     speed = models.DecimalField(blank=True, null=True, decimal_places=2, max_digits=6)
     date = models.DateTimeField(blank=True, null=True, verbose_name=_("date"))
     
+    # Automatically set date to current date on every save
     def save(self, *args, **kwargs):
         self.date = timezone.now()
         return super(SpeedViolation, self).save(*args, **kwargs)

@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSpeedLimits } from "../fetch/speedLimits";
-import { connect, messages } from "../services/VehicleService";
 import BarChart from "../components/reports/BarChart";
 
 const useStyles = makeStyles((theme) => ({

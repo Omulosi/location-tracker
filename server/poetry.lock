@@ -558,6 +558,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "pygraphviz"
+version = "1.8"
+description = "Python interface to Graphviz"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "pyjwt"
 version = "2.3.0"
 description = "JSON Web Token implementation in Python"
@@ -837,7 +845,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "087b4e934f1d742f301b29f81121a2fa213ed51290c936b37c242ebc33bf481b"
+content-hash = "6e1c5ac5193916bde5eed71cc0bf2142edb218d918b81a0d95e2eca847948678"
 
 [metadata.files]
 aioredis = [
@@ -1290,6 +1298,9 @@ pyasn1-modules = [
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
+]
+pygraphviz = [
+    {file = "pygraphviz-1.8.zip", hash = "sha256:eb2e25a2c647044e7b66b5a159be64daaef24b549fcf535c241369d6e6e09c45"},
 ]
 pyjwt = [
     {file = "PyJWT-2.3.0-py3-none-any.whl", hash = "sha256:e0c4bb8d9f0af0c7f5b1ec4c5036309617d03d56932877f2f7a0beeb5318322f"},
